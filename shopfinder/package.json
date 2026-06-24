@@ -1,0 +1,37 @@
+{
+  "name": "shopfinder",
+  "private": true,
+  "type": "module",
+  "version": "0.1.0",
+  "description": "Personal Shopify-store discovery dashboard (brandsearch-style), powered by Apify.",
+  "scripts": {
+    "ingest": "tsx src/ingest/run.ts",
+    "migrate": "tsx src/db/migrate.ts",
+    "dev:server": "tsx watch src/server.ts",
+    "dev:web": "vite --config web/vite.config.ts",
+    "dev": "concurrently -k -n server,web -c blue,magenta \"npm:dev:server\" \"npm:dev:web\"",
+    "build": "vite build --config web/vite.config.ts",
+    "start": "tsx src/server.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.13.7",
+    "better-sqlite3": "^11.8.1",
+    "hono": "^4.6.14"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.12",
+    "@types/node": "^22.10.2",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "@vitejs/plugin-react": "^4.3.4",
+    "concurrently": "^9.1.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "vite": "^5.4.11",
+    "vitest": "^2.1.8"
+  }
+}

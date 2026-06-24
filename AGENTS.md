@@ -161,3 +161,12 @@
 - Publish: `npm publish --access public --otp="<otp>"` (run from the package dir).
 - Verify without local npmrc side effects: `npm view <pkg> version --userconfig "$(mktemp)"`.
 - Kill the tmux session after publish.
+
+## ShopFinder (`shopfinder/`)
+- Self-contained, brandsearch-style **Shopify-store discovery dashboard**; personal tool, **decoupled** from moltbot's build/lint/test (own `package.json`, not in `pnpm-workspace.yaml`; use `npm` inside `shopfinder/`).
+- Filters: creation date, language, shipping country, niche, country of origin, currency, product count.
+- **Data is 100% from Apify** (no self-crawler). Primary actor `apivault_labs/shopify-store-analyzer` (`discover_and_analyze` mode → `oldest_product_date`, `locale`/`hreflangs`, `markets`, `primary_niche`, `sitemap_products`, `currency`, traffic/revenue); optional `clearpath/shopify-store-leads` for explicit `shipsTo`. Direct Apify REST with a token-rotation pool.
+- **Secrets:** Apify tokens live in **gitignored `shopfinder/.env`** as `APIFY_TOKENS` (comma-separated rotation pool). **Never commit tokens**; committed files reference only the env var name.
+- Stack: TS/ESM (Node 22+), `better-sqlite3` (`shopfinder/data/shopfinder.db`, gitignored), Hono API, Vite + React UI.
+- Commands (from `shopfinder/`): `npm install`; `npm run ingest -- --terms "organic coffee" [--country US] [--max 25]` (or `--file data/x.json` to import a saved dataset); `npm run dev` (UI :5173 / API :8787) or `npm run build && npm start`; `npm test`.
+- Live ingest needs `api.apify.com` egress — blocked in the Claude Code web sandbox, works on a normal machine.

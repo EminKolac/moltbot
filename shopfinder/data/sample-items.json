@@ -1,0 +1,128 @@
+[
+  {
+    "domain": "northpeak-coffee.com",
+    "url": "https://northpeak-coffee.com",
+    "og_site_name": "North Peak Coffee Roasters",
+    "store_summary": "Small-batch organic coffee roasted in Portland.",
+    "oldest_product_date": "2019-04-12T00:00:00Z",
+    "locale": "en-US",
+    "hreflangs": ["en-US", "en-CA"],
+    "currency": "usd",
+    "markets": ["United States", "Canada"],
+    "primary_niche": "Food & Beverage",
+    "top_product_types": [{ "type": "Coffee", "count": 30 }, { "type": "Brewing Gear", "count": 12 }],
+    "sitemap_products": 45,
+    "product_count_sampled": 40,
+    "tech_stack": ["Klaviyo", "Recharge", "Judge.me"],
+    "traffic": { "monthly_visits": 84000, "top_countries": [{ "country_code": "US", "share": 0.72 }, { "country_code": "CA", "share": 0.11 }] },
+    "revenue_estimate": { "monthly_revenue_usd_est": 120000 },
+    "best_sellers": [
+      { "title": "Sunrise Blend (12oz)", "price": 18, "image": "https://northpeak-coffee.com/i/sunrise.jpg", "product_url": "https://northpeak-coffee.com/products/sunrise" },
+      { "title": "Decaf Midnight", "price": 19, "image": "https://northpeak-coffee.com/i/midnight.jpg", "product_url": "https://northpeak-coffee.com/products/midnight" }
+    ]
+  },
+  {
+    "domain": "maison-belle-skincare.fr",
+    "url": "https://maison-belle-skincare.fr",
+    "og_site_name": "Maison Belle",
+    "store_summary": "Soins de la peau naturels fabriqués en France.",
+    "oldest_product_date": "2021-09-01T00:00:00Z",
+    "locale": "fr-FR",
+    "hreflangs": ["fr-FR", "fr-BE"],
+    "currency": "EUR",
+    "markets": ["FR", "BE", "CH", "LU"],
+    "primary_niche": "Beauty & Skincare",
+    "top_product_types": [{ "type": "Serums", "count": 22 }, { "type": "Cleansers", "count": 18 }],
+    "sitemap_products": 120,
+    "tech_stack": ["Klaviyo", "Yotpo"],
+    "traffic": { "monthly_visits": 52000, "top_countries": [{ "country_code": "FR", "share": 0.81 }] },
+    "revenue_estimate": { "monthly_revenue_usd_est": 90000 },
+    "best_sellers": [
+      { "title": "Sérum Éclat", "price": 39, "image": "https://maison-belle-skincare.fr/i/serum.jpg", "product_url": "https://maison-belle-skincare.fr/products/serum-eclat" }
+    ]
+  },
+  {
+    "domain": "ironforge-fitness.com",
+    "url": "https://ironforge-fitness.com",
+    "og_site_name": "Ironforge Fitness",
+    "store_summary": "Premium home gym equipment and apparel.",
+    "oldest_product_date": "2017-02-20T00:00:00Z",
+    "locale": "en-GB",
+    "hreflangs": ["en-GB", "en-US", "en-AU"],
+    "currency": "GBP",
+    "markets": [],
+    "primary_niche": "Sports & Fitness",
+    "top_product_types": [{ "type": "Apparel", "count": 60 }, { "type": "Equipment", "count": 20 }],
+    "sitemap_products": 80,
+    "tech_stack": ["Gorgias", "Recharge"],
+    "traffic": { "monthly_visits": 210000, "top_countries": [{ "country_code": "GB", "share": 0.55 }, { "country_code": "US", "share": 0.2 }] },
+    "revenue_estimate": { "monthly_revenue_usd_est": 340000 },
+    "best_sellers": [
+      { "title": "Adjustable Dumbbell Set", "price": 220, "image": "https://ironforge-fitness.com/i/db.jpg", "product_url": "https://ironforge-fitness.com/products/dumbbells" }
+    ]
+  },
+  {
+    "domain": "kleine-wolke-home.de",
+    "url": "https://kleine-wolke-home.de",
+    "og_site_name": "Kleine Wolke Home",
+    "store_summary": "Skandinavisch inspirierte Wohnaccessoires.",
+    "oldest_product_date": "2022-11-05T00:00:00Z",
+    "locale": "de-DE",
+    "hreflangs": ["de-DE", "de-AT"],
+    "currency": "EUR",
+    "markets": ["DE", "AT"],
+    "primary_niche": "Home & Garden",
+    "top_product_types": [{ "type": "Textiles", "count": 90 }, { "type": "Lighting", "count": 40 }],
+    "sitemap_products": 230,
+    "tech_stack": ["Klaviyo"],
+    "traffic": { "monthly_visits": 33000, "top_countries": [{ "country_code": "DE", "share": 0.88 }] },
+    "revenue_estimate": { "monthly_revenue_usd_est": 47000 },
+    "best_sellers": [
+      { "title": "Leinen Kissenbezug", "price": 29, "image": "https://kleine-wolke-home.de/i/kissen.jpg", "product_url": "https://kleine-wolke-home.de/products/kissen" }
+    ]
+  },
+  {
+    "domain": "wildpaws-petsupply.com",
+    "url": "https://wildpaws-petsupply.com",
+    "og_site_name": "Wild Paws",
+    "store_summary": "Natural dog and cat supplies.",
+    "locale": "en-US",
+    "hreflangs": ["en-US"],
+    "currency": "USD",
+    "markets": ["US"],
+    "primary_niche": "Pet Supplies",
+    "top_product_types": [{ "type": "Treats", "count": 25 }, { "type": "Toys", "count": 35 }],
+    "sitemap_products": 60,
+    "tech_stack": ["Recharge"],
+    "traffic": { "monthly_visits": 18000, "top_countries": [{ "country_code": "US", "share": 0.95 }] },
+    "revenue_estimate": { "monthly_revenue_usd_est": 26000 },
+    "best_sellers": [
+      { "title": "Salmon Training Treats", "price": 14, "image": "https://wildpaws-petsupply.com/i/treats.jpg", "product_url": "https://wildpaws-petsupply.com/products/treats" }
+    ]
+  },
+  {
+    "domain": "auroria-jewelry.com",
+    "url": "https://auroria-jewelry.com",
+    "og_site_name": "Auroria",
+    "store_summary": "Handcrafted demi-fine jewelry from Australia.",
+    "oldest_product_date": "2015-06-30T00:00:00Z",
+    "locale": "en-AU",
+    "hreflangs": ["en-AU", "en-NZ", "en-US"],
+    "currency": "AUD",
+    "markets": ["AU", "NZ", "US", "GB"],
+    "primary_niche": "Jewelry & Accessories",
+    "top_product_types": [{ "type": "Necklaces", "count": 110 }, { "type": "Rings", "count": 95 }],
+    "sitemap_products": 300,
+    "tech_stack": ["Klaviyo", "Okendo", "Gorgias"],
+    "traffic": { "monthly_visits": 127000, "top_countries": [{ "country_code": "AU", "share": 0.48 }, { "country_code": "US", "share": 0.27 }] },
+    "revenue_estimate": { "monthly_revenue_usd_est": 410000 },
+    "best_sellers": [
+      { "title": "Aurora Pendant", "price": 89, "image": "https://auroria-jewelry.com/i/pendant.jpg", "product_url": "https://auroria-jewelry.com/products/aurora-pendant" }
+    ]
+  },
+  {
+    "_comparison_report": true,
+    "stores_compared": 6,
+    "revenue_leader": "auroria-jewelry.com"
+  }
+]

@@ -1,0 +1,18 @@
+# dependencies
+node_modules/
+
+# secrets — never commit
+.env
+.env.*
+!.env.example
+
+# local database + build output
+data/*.db
+data/*.db-shm
+data/*.db-wal
+web/dist/
+dist/
+
+# logs / os
+*.log
+.DS_Store
