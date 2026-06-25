@@ -23,6 +23,10 @@
   mined quotes: `_corpus/youtube/extracted-quotes.md`.
 - He notes a "mandatory" breakout teaching video (on a moderator's channel): https://www.youtube.com/watch?v=xx8GvtAxilk
 
+**X / Twitter — @Qullamaggie** (https://twitter.com/Qullamaggie) — 20 most-recent posts scraped this
+run via Apify (`danek/twitter-scraper-ppr`); notable items in `_corpus/x/tweets.md`. Live market
+commentary plus the Market Wizards inclusion and 2025 setup examples.
+
 **Interview**
 - *Chat With Traders* (ep. 224) interview notes — https://tradingresourcehub.substack.com/p/interview-qullamaggie-chat-with-traders-part1
   (background, account timeline, philosophy; corroborated via web search — see note on fetch below.)
@@ -70,17 +74,20 @@ This build ran in a sandbox with a **policy-enforcing egress proxy**, which mate
   `@tradingarchive2702` did not resolve. **8 of 10** videos were transcribable; **3** were deep-mined.
   So YouTube coverage is **his recent streams, not his full historical catalog** (the deleted older
   material is unavailable from his own channel by any route).
-- **X/Twitter was not captured this run.** It is directly egress-blocked, and the Apify MCP server
-  **disconnected mid-session** before the (lowest-value) tweet scrape completed. His posts are mostly
-  short market commentary; the substance here comes from his blog and streams. Treat X coverage as a
-  known gap rather than implied.
+- **X/Twitter was captured** (follow-up run) via the Apify `danek/twitter-scraper-ppr` actor — the
+  free tier returned his **20 most-recent posts** (Oct 2025 – Jun 2026); the first two actors tried
+  (`apidojo/tweet-scraper`, profile + handle modes) returned `noResults` on the free tier. His feed is
+  mostly live market commentary, but it added real value: his **Market Wizards: The Next Generation
+  (2026)** inclusion, his paper-vs-live origin story, and dated examples of all three setups (base
+  breakouts $ALAB/$DAVE, parabolic shorts $QBTS/$RGTI). A deeper query for his highest-engagement
+  tweets hit a transient tool error and was not retried. Saved to `_corpus/x/tweets.md`.
 - **User-provided Apify API keys could not be used** (direct Apify API is egress-blocked, and the MCP
   tools authenticate with the server's own token, not a passed-in key). They were **never written to
   any file or committed**. Because they were shared in plaintext, rotating them is advisable.
 
 Net: **primary sourcing is strong** (his definitive blog article in full + three dated 2023 streams +
-cross-checked third-party material), with the honest limitation that his **deleted pre-2022 video
-catalog** and **X history** were not retrievable in this environment.
+20 recent X posts + cross-checked third-party material), with the honest limitation that his **deleted
+pre-2022 video catalog** and **deep X history** were not retrievable on the free tier in this environment.
 
 ---
 

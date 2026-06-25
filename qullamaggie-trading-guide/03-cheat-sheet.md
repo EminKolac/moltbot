@@ -33,7 +33,7 @@
 - **Manage:** partial at 3–5d / 2–3R → breakeven → trail 10/20-day. Bull-market winners often **10–20×** risk.
 - **Best when** the market is **just coming out of a correction** (tricky after a month straight up).
 
-## Setup 2 — Episodic Pivot (EP) *(his current main setup)*
+## Setup 2 — Episodic Pivot (EP) *(his go-to when breakouts aren't working)*
 - **Scan:** **gap ≥ +10%** on a real **catalyst** (usually earnings/guidance); **NOT already up** the
   prior 3–6 months (must be a genuine surprise); **huge volume** (≈ avg daily volume in first 15–30 min);
   opens **above the base and the 50-day**. Quality EP = **mid/high or triple-digit EPS+rev growth, big beat**.

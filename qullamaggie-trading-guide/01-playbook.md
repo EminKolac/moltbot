@@ -34,7 +34,10 @@ He uses **three setups**, in order of how often they appear and how early you sh
 > choppy 2022-2023 tape stopped rewarding breakouts: *"I haven't really traded breakouts since 2021;
 > EPs have worked way better... EPs have been 50 times better than breakouts."* He also calls the EP
 > *"probably the best setup for most people,"* because you can prep before the open instead of
-> watching every tick. The setup that's working is **regime-dependent**, and that is the point.
+> watching every tick. But this is **regime-dependent, not a permanent switch**: when the strong
+> 2024–2025 momentum tape returned, so did his **breakouts and parabolic shorts** — his own X feed in
+> late 2025 is full of base-breakout calls (*$ALAB, $DAVE*) and parabolic shorts (*"$QBTS air coming
+> out"*). The lesson isn't "trade EPs"; it's **trade whatever the current market is rewarding.**
 
 He is a **human discretionary trader, not a bot.** The screening and rules are mechanical, but
 catalyst judgement, market-regime reading, and conviction sizing are discretionary. (A full
@@ -47,9 +50,14 @@ mechanical-vs-discretionary breakdown and an automatable spec are in the compani
 - **Name:** Kristjan Kullamägi. Online handle **"Qullamaggie."** Swedish, based in Europe (later
   Dubai). The surname is Estonian in origin; public sources describe him as a Swedish trader.
 - **Background:** Worked ordinary jobs (including as a security guard) before trading full-time.
-- **The story:** Started trading in **2011** at age 23. Blew up several small accounts in his first
-  two years. First profitable year **2013** (account around **$9,000**). Switched from frantic day
-  trading to **swing trading**, which fit his personality and scaled better.
+- **The story:** Started trading in **2011** at age 23. In his own retelling: *"I opened a paper
+  trading account and doubled my money in two weeks — I thought I was all set. I started live trading
+  and in two months I lost 90% of my money."* He blew up several small accounts in his first two
+  years, had his first profitable year in **2013** (account around **$9,000**), then switched from
+  frantic day trading to **swing trading**, which fit his personality and scaled better.
+- **Peer recognition:** he is profiled in **Jack Schwager's *Market Wizards: The Next Generation*
+  (2026)** — the same series that inspired him in 2011. He credits two communities he joined early —
+  **Stockbee (Pradeep Bonde)** and **IU Traders** — as, in his words, *"Market Wizard factories."*
 - **The growth:** Reached financial independence around 2017; roughly **$1.4M (2018) → ~$4M
   (mid-2019)**, then an explosive run through the 2020–2021 bull market to a reported peak of
   **~$100M+** (a widely-cited statement put him around $82M in March 2021).
@@ -332,6 +340,10 @@ structure (prep → trade the open → manage → journal) is what matters.
   but I take half-size trades in bad markets ten times and it adds up. That's my biggest detractor
   every year."* If it's his hardest problem, expect it to be yours; the regime filter exists largely
   to stop you trading when there's nothing to trade.
+- **Don't outsmart a clean setup.** A vivid 2025 example in his own words: *"On July 17th I passed on
+  the $ALAB perfect base breakout with higher lows because it had gone nowhere while peers and the
+  Nasdaq had been ripping for months. Not gonna try to outsmart a good setup again."* A valid pattern
+  is valid; "it's a laggard" or "it already ran" are not reasons to override a textbook base.
 - **Trade small for a long time.** Consistency at small size first; scale only once profitable.
 - **Journal and screenshot relentlessly.** Your own annotated history is the best teacher.
 - **Expect to lose most trades.** A 25–35% win rate means **3–6+ losers in a row is normal**, not a
