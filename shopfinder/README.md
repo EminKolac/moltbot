@@ -35,6 +35,8 @@ cp .env.example .env   # then paste your Apify token(s) into APIFY_TOKENS
 npm run ingest -- --terms "organic coffee,yoga mats" --max 25
 # Optionally bias discovery to a country of origin
 npm run ingest -- --terms "skincare" --country US --max 25
+# Capture the raw actor output too (re-import for free with --file)
+npm run ingest -- --terms "yoga mats" --max 25 --save data/raw.json
 ```
 
 Each run logs how many stores were discovered, analyzed, and upserted, plus the approximate
@@ -56,3 +58,6 @@ Open http://localhost:5173 (dev) or http://localhost:8787 (built) and filter awa
 - `markets` / shipping country and `oldest_product_date` / creation date are best-effort signals
   derived from the storefront; they are labeled as estimates in the UI.
 - Re-running ingest refreshes existing stores (upsert by domain).
+- Traffic-derived fields (country of origin, monthly visits, monthly revenue) depend on the actor
+  returning traffic data, which may be unavailable; when absent, the dashboard hides the visits/revenue
+  sorts and the country filter shows "No data yet".

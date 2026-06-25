@@ -21,10 +21,30 @@ product count. Data comes 100% from Apify actors -> local SQLite -> Hono API -> 
 
 ## Current status (DONE)
 
-- MVP complete and verified: **15/15 tests passing**.
-- Branch: `claude/gracious-thompson-stroxf` (pushed to GitHub `EminKolac/moltbot`).
+- MVP complete and verified: **22/22 tests passing**.
+- **Live Apify pipeline validated end-to-end** (2026-06-25): ran the real actor through the app's own
+  token path and ingested real Shopify stores → DB → API → dashboard. See "Live validation findings".
+- Branch: `claude/gracious-thompson-stroxf` (GitHub `EminKolac/moltbot`).
 - Stack: TypeScript/ESM (Node 22+), better-sqlite3, Hono API, Vite + React UI. Uses **npm** (not pnpm).
 - Self-contained: decoupled from the surrounding moltbot repo (own package.json, not in the workspace).
+
+## Live validation findings (2026-06-25)
+
+Running the real actor surfaced behavior the sample data hid:
+
+- **`map.ts` field mapping is correct** against real output — no field-name bugs.
+- **The analyzer returns no traffic data on this plan**, so `country` (origin), `monthly_visits`, and
+  `monthly_revenue_usd` are null for real stores. The dashboard now hides the Visits/Revenue sorts when
+  no store has that data, and the country filter shows "No data yet". Every other filter/sort works.
+  (Open question: source traffic elsewhere, or drop those signals.)
+- **The actor can exit `FAILED` (code 91) while still writing a full dataset** — this was triggered by
+  passing a `maxTotalChargeUsd` cap via the Apify MCP; the app's own runs (no cap) come back SUCCEEDED.
+  `apify.ts` now salvages the dataset on any non-SUCCEEDED status when it is non-empty, so ingest never
+  throws away good data.
+- **Niche casing** varies by source (`food & beverage` vs `Food & Beverage`); niche filtering + faceting
+  are now case-insensitive (`COLLATE NOCASE`).
+- New ingest flag `--save <path>` writes the raw actor items to JSON; `data/live-sample.json` (a trimmed
+  real capture) is committed as the map regression fixture.
 
 ## Layout (inside shopfinder/)
 
@@ -55,8 +75,10 @@ npm run build                                      # production bundle
 cp .env.example .env
 # put ROTATED Apify tokens into APIFY_TOKENS=tok1,tok2,...
 npm run ingest -- --terms "organic coffee,yoga mats" --max 25   # --country US biases origin
+npm run ingest -- --terms "skincare" --max 3 --save data/raw.json  # also capture raw output
 ```
-Primary actor: `apivault_labs/shopify-store-analyzer` (discover_and_analyze mode).
+Primary actor: `apivault_labs/shopify-store-analyzer` (discover_and_analyze mode). Do **not** pass a
+pay-per-event charge cap — it can make the actor exit FAILED (the app salvages the data regardless).
 
 ## Local workflow
 
@@ -67,6 +89,8 @@ Primary actor: `apivault_labs/shopify-store-analyzer` (discover_and_analyze mode
 
 ## Roadmap / next ideas (deferred)
 
+- Decide on traffic data: the primary actor returns no visits/revenue/country — source it elsewhere or
+  drop those signals (the Visits/Revenue sorts already auto-hide when no store has the data).
 - Scheduled auto-refresh of ingested stores.
 - `/products.json` enrichment for deeper product data.
 - Revenue/traffic charts; more sorting + filters; saved searches.
