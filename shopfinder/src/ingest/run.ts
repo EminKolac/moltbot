@@ -1,4 +1,4 @@
-import { readFile } from "node:fs/promises";
+import { readFile, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { parseArgs } from "node:util";
 import { loadEnv } from "../lib/env";
@@ -14,7 +14,7 @@ loadEnv();
 const USAGE = `
 ShopFinder ingest — pull Shopify stores from Apify into the local DB.
 
-  npm run ingest -- --terms "organic coffee,yoga mats" [--max 25] [--country US] [--source apivault|clearpath] [--ships-to US]
+  npm run ingest -- --terms "organic coffee,yoga mats" [--max 25] [--country US] [--source apivault|clearpath] [--ships-to US] [--save data/raw.json]
   npm run ingest -- --file data/dataset.json        # import a saved Apify dataset (array of items)
 
 Options:
@@ -24,6 +24,7 @@ Options:
   --ships-to   ISO-2 ships-to country (clearpath source only)
   --source     apivault (default, full analysis) or clearpath (ships-to discovery)
   --file       Import items from a JSON file instead of calling Apify
+  --save       Write the raw fetched/loaded items to a JSON file (before mapping)
 `;
 
 async function main() {
@@ -35,6 +36,7 @@ async function main() {
       "ships-to": { type: "string" },
       max: { type: "string", default: "25" },
       file: { type: "string" },
+      save: { type: "string" },
       help: { type: "boolean", default: false },
     },
   });
@@ -78,6 +80,12 @@ async function main() {
       timeoutMs: 15 * 60 * 1000,
     });
     console.log(`[ingest] actor returned ${items.length} raw items`);
+  }
+
+  if (values.save) {
+    const out = resolve(values.save);
+    await writeFile(out, JSON.stringify(items, null, 2));
+    console.log(`[ingest] saved ${items.length} raw items to ${values.save}`);
   }
 
   const stores = mapItems(source, items, actor, {
