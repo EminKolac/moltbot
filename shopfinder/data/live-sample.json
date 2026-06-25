@@ -1,0 +1,125 @@
+[
+  {
+    "input_url": "https://www.cafebritt.com",
+    "url": "https://www.cafebritt.com",
+    "domain": "cafebritt.com",
+    "myshopify_handle": "faabaa-2.myshopify.com",
+    "success": true,
+    "locale": "en",
+    "currency": "USD",
+    "og_site_name": "Café Britt",
+    "og_title": "Welcome to Café Britt: Your Gateway to Costa Rican Gourmet Coffee",
+    "og_description": "Explore the rich world of Costa Rican gourmet excellence at Café Britt.",
+    "page_title": "Welcome to Café Britt: Your Gateway to Costa Rican Gourmet Coffee",
+    "store_summary": "mid-market food & beverage; growing maturity; uses Klaviyo, Loox, Zendesk.",
+    "primary_niche": "food & beverage",
+    "oldest_product_date": "2023-09-22",
+    "hreflangs": ["es", "en", "en-CA"],
+    "markets": ["CA"],
+    "tech_stack": ["Klaviyo", "Loox", "Zendesk", "Lucky Orange", "Shop Pay", "Apple Pay", "Google Pay"],
+    "top_product_types": [
+      { "type": "Coffee", "count": 91 },
+      { "type": "CHOCOLATE", "count": 31 }
+    ],
+    "sitemap_products": 228,
+    "product_count_sampled": 167,
+    "revenue_estimate": { "monthly_orders_est": null, "monthly_revenue_usd_est": null },
+    "best_sellers": [
+      {
+        "rank": 1,
+        "title": "COSTA RICAN DARK ROAST COFFEE",
+        "handle": "costa-rican-dark-roast-coffee",
+        "product_url": "https://www.cafebritt.com/products/costa-rican-dark-roast-coffee",
+        "price": 19.95,
+        "on_sale": false,
+        "product_type": "Coffee",
+        "image": "https://cdn.shopify.com/s/files/1/0832/2475/6522/files/TuesteOscuroMockup-Front-Molido.webp?v=1777051685",
+        "in_stock": true
+      },
+      {
+        "rank": 2,
+        "title": "COSTA RICAN MONTECIELO COFFEE FROM TARRAZU",
+        "handle": "costa-rican-montecielo-coffee-from-tarrazu",
+        "product_url": "https://www.cafebritt.com/products/costa-rican-montecielo-coffee-from-tarrazu",
+        "price": 20.95,
+        "on_sale": false,
+        "product_type": "Coffee",
+        "image": "https://cdn.shopify.com/s/files/1/0832/2475/6522/files/MontecieloMockup-Front-Grano.webp?v=1777051597",
+        "in_stock": true
+      }
+    ]
+  },
+  {
+    "input_url": "https://www.peets.com",
+    "url": "https://www.peets.com",
+    "domain": "peets.com",
+    "myshopify_handle": "peets-coffee.myshopify.com",
+    "success": true,
+    "locale": "en",
+    "currency": "USD",
+    "page_title": "Peet's Coffee | The Original Craft Coffee Since 1966",
+    "store_summary": "mid-market food & beverage; emerging maturity; uses Shop Pay.",
+    "primary_niche": "food & beverage",
+    "oldest_product_date": "2020-06-17",
+    "hreflangs": [],
+    "tech_stack": ["Shop Pay"],
+    "top_product_types": [
+      { "type": "Menu", "count": 95 },
+      { "type": "Coffee", "count": 65 }
+    ],
+    "sitemap_products": 241,
+    "product_count_sampled": 250,
+    "revenue_estimate": { "monthly_orders_est": null, "monthly_revenue_usd_est": null },
+    "best_sellers": [
+      {
+        "rank": 1,
+        "title": "Major Dickason's",
+        "handle": "major-dickasons",
+        "product_url": "https://www.peets.com/products/major-dickasons",
+        "price": 21.95,
+        "on_sale": false,
+        "product_type": "Coffee",
+        "image": "https://cdn.shopify.com/s/files/1/0319/0764/3436/files/Major_Dickasons.png?v=1767117718",
+        "in_stock": true
+      }
+    ]
+  },
+  {
+    "input_url": "https://www.freshroastedcoffee.com",
+    "url": "https://www.freshroastedcoffee.com",
+    "domain": "freshroastedcoffee.com",
+    "myshopify_handle": "fresh-roasted-coffee.myshopify.com",
+    "success": true,
+    "locale": "en",
+    "currency": "USD",
+    "og_site_name": "Fresh Roasted Coffee",
+    "og_title": "Fresh Roasted Coffee LLC.",
+    "og_description": "For more than a decade, Fresh Roasted Coffee has been roasting over 100 types of specialty coffees.",
+    "page_title": "Fresh Roasted Coffee LLC.",
+    "store_summary": "mid-market food & beverage; growing maturity; uses Yotpo, Yotpo Loyalty, SMSBump.",
+    "primary_niche": "food & beverage",
+    "oldest_product_date": "2025-06-06",
+    "hreflangs": [],
+    "tech_stack": ["Yotpo", "Yotpo Loyalty", "SMSBump", "Google Analytics", "Microsoft Clarity", "Shop Pay"],
+    "top_product_types": [
+      { "type": "ALLIED | SYRUPS", "count": 41 },
+      { "type": "GEAR | BREWER", "count": 15 }
+    ],
+    "sitemap_products": 962,
+    "product_count_sampled": 250,
+    "revenue_estimate": { "monthly_orders_est": null, "monthly_revenue_usd_est": null },
+    "best_sellers": [
+      {
+        "rank": 1,
+        "title": "Organic Assam TGFOP - Loose Leaf Tea",
+        "handle": "organic-assam-tgfop-black-tea",
+        "product_url": "https://www.freshroastedcoffee.com/products/organic-assam-tgfop-black-tea",
+        "price": 11.99,
+        "on_sale": false,
+        "product_type": "LLF | PST | ORG | BLK",
+        "image": "https://cdn.shopify.com/s/files/1/2217/5179/files/full_84ac5401.jpg?v=1781268829",
+        "in_stock": true
+      }
+    ]
+  }
+]
