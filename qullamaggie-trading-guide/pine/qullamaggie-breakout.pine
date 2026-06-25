@@ -1,0 +1,115 @@
+//@version=6
+// =====================================================================================
+// Qullamaggie — BREAKOUT / CONTINUATION (backtestable strategy)
+// Educational only. NOT financial advice.
+//
+// Faithful single-symbol mechanical core of his breakout setup:
+//   prior big move -> tight consolidation -> breakout, LOD stop capped at 1x ADR,
+//   risk-based sizing, partial into strength, then trail the 10/20 MA.
+//
+// HONEST LIMITATIONS (Pine cannot do these in a strategy):
+//   1) No universe ranking. A strategy runs on ONE symbol; it cannot pick the
+//      "top 1-2% gainers" across the market. Use the companion screener for that.
+//   2) Opening-range-high entries are intraday. On a DAILY chart this enters on the
+//      daily close above the base; for true 1m/5m ORH, run this on a 1m/5m chart.
+// =====================================================================================
+strategy("Qulla Breakout/Continuation", overlay=true, initial_capital=100000,
+     default_qty_type=strategy.fixed, calc_on_every_tick=false, process_orders_on_close=true,
+     commission_type=strategy.commission.percent, commission_value=0.02, slippage=2,
+     pyramiding=0)
+
+// ----------------------------- Inputs -----------------------------
+gReg       = "Market regime filter"
+useRegime  = input.bool(true,        "Require risk-on regime",  group=gReg)
+regimeSym  = input.symbol("AMEX:SPY", "Regime index",           group=gReg)
+fastLen    = input.int(10,           "Regime fast MA",          minval=1, group=gReg)
+slowLen    = input.int(20,           "Regime slow MA",          minval=1, group=gReg)
+
+gSet       = "Setup filters"
+rsLookback = input.int(60,    "Prior-move lookback (bars)",     minval=5,  group=gSet)
+rsMinPct   = input.float(30.0,"Min prior move % over lookback", group=gSet)
+adrLen     = input.int(20,    "ADR length",                     minval=2,  group=gSet)
+adrMinPct  = input.float(5.0, "Min ADR %",                      group=gSet)
+dollarVolM = input.float(30.0,"Min $ volume (millions)",        group=gSet)
+baseLen    = input.int(10,    "Consolidation lookback (bars)",  minval=2,  group=gSet)
+maxBasePct = input.float(25.0,"Max consolidation depth %",      group=gSet)
+volExpand  = input.float(1.3, "Breakout volume x avg(50)",      group=gSet)
+
+gRisk      = "Risk & exits"
+riskPct    = input.float(0.5, "Risk per trade %",               minval=0.01, group=gRisk)
+adrStopMul = input.float(1.0, "Max stop = x ADR",               minval=0.1,  group=gRisk)
+minDays    = input.int(3,     "Min days before partial",        minval=0,    group=gRisk)
+maxDays    = input.int(5,     "Days -> take partial anyway",    minval=1,    group=gRisk)
+partialR   = input.float(2.0, "Partial at R multiple",          group=gRisk)
+partialPct = input.int(50,    "Partial size %",                 minval=1, maxval=99, group=gRisk)
+trailLen   = input.int(10,    "Trail MA length (10 fast/20 slow)", minval=2, group=gRisk)
+trailType  = input.string("EMA","Trail MA type", options=["EMA","SMA"],     group=gRisk)
+
+// ----------------------------- Indicators -----------------------------
+adrPct     = (ta.sma(high / low, adrLen) - 1.0) * 100.0     // Qullamaggie-style ADR%
+adrDollar  = close * adrPct / 100.0
+dollarVol  = close * volume
+priorMove  = (close / close[rsLookback] - 1.0) * 100.0
+avgVol     = ta.sma(volume, 50)
+sma10      = ta.sma(close, 10)
+trailMA    = trailType == "EMA" ? ta.ema(close, trailLen) : ta.sma(close, trailLen)
+
+// Consolidation measured over the prior `baseLen` bars (excluding the breakout bar)
+baseHigh   = ta.highest(high, baseLen)[1]
+baseLow    = ta.lowest(low,  baseLen)[1]
+baseDepth  = (baseHigh - baseLow) / baseLow * 100.0
+
+// Regime: index fast MA above slow MA and rising
+regFast    = request.security(regimeSym, "D", ta.sma(close, fastLen))
+regSlow    = request.security(regimeSym, "D", ta.sma(close, slowLen))
+regimeOK   = not useRegime or (regFast > regSlow and regFast > regFast[1])
+
+// ----------------------------- Entry logic -----------------------------
+breakout   = close > baseHigh and close > sma10 and volume > avgVol * volExpand
+qualifies  = priorMove >= rsMinPct and adrPct >= adrMinPct and dollarVol >= dollarVolM * 1e6 and baseDepth <= maxBasePct
+
+entryPrice = close
+rawStop    = low                                   // low of the breakout day
+stopDist   = entryPrice - rawStop
+// Faithful rule: if the LOD is more than 1 ADR away, the trade is too loose -> SKIP it.
+validStop  = stopDist > 0 and stopDist <= adrDollar * adrStopMul
+goLong     = regimeOK and qualifies and breakout and validStop and strategy.position_size == 0
+qty        = validStop ? math.floor((strategy.equity * riskPct / 100.0) / stopDist) : 0
+
+var float entryRef = na
+var float stopRef  = na
+var int   entryBar = na
+var bool  partialed = false
+
+if goLong and qty > 0
+    strategy.entry("Long", strategy.long, qty=qty)
+    entryRef  := entryPrice
+    stopRef   := rawStop
+    entryBar  := bar_index
+    partialed := false
+
+// ----------------------------- Management -----------------------------
+inLong   = strategy.position_size > 0
+daysHeld = inLong ? bar_index - entryBar : 0
+curR     = inLong and (entryRef - stopRef) > 0 ? (close - entryRef) / (entryRef - stopRef) : 0.0
+
+// Sell a partial into strength after a few days / R, then move stop to breakeven
+if inLong and not partialed and daysHeld >= minDays and (curR >= partialR or daysHeld >= maxDays)
+    strategy.close("Long", qty_percent=partialPct, comment="partial")
+    stopRef   := math.max(stopRef, entryRef)       // breakeven on the remainder
+    partialed := true
+
+// Hard stop (refreshed each bar while in a position)
+if inLong
+    strategy.exit("stop", "Long", stop=stopRef)
+
+// Trail: exit the remainder on a CLOSE below the trail MA (after the partial)
+if inLong and partialed and close < trailMA
+    strategy.close("Long", comment="MA trail")
+
+// ----------------------------- Plots -----------------------------
+plot(sma10,   "10 MA", color=color.new(color.orange, 0))
+plot(trailMA, "Trail MA", color=color.new(color.blue, 0))
+plot(inLong ? stopRef : na, "Stop", color=color.red, style=plot.style_linebr, linewidth=2)
+bgcolor(regimeOK ? color.new(color.green, 92) : color.new(color.red, 94), title="Regime")
+plotshape(goLong and qty > 0, "Entry", shape.triangleup, location.belowbar, color.new(color.green,0), size=size.small)

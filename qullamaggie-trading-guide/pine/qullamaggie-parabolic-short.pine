@@ -1,0 +1,94 @@
+//@version=6
+// =====================================================================================
+// Qullamaggie — PARABOLIC SHORT (backtestable strategy)  *** ADVANCED / HIGH RISK ***
+// Educational only. NOT financial advice. Shorting strong stocks can cause unlimited loss
+// on a gap; size small and obey stops. He says attempt this only after years of long-side
+// profitability.
+//
+// Premise: an over-extended, climactic stock rolls over. Short the first crack, tight stop
+// at the high of day, cover into the 10/20-day MA (first bounce zone), trail the rest.
+//
+// HONEST LIMITATIONS:
+//   1) Real entries are intraday (opening-range-low break, VWAP fail). On a DAILY chart this
+//      shorts the close of the first lower-low day. For ORL/VWAP, run on a 1m/5m chart.
+//   2) No borrow-availability / hard-to-borrow / overnight-gap modeling here.
+// =====================================================================================
+strategy("Qulla Parabolic Short", overlay=true, initial_capital=100000,
+     default_qty_type=strategy.fixed, calc_on_every_tick=false, process_orders_on_close=true,
+     commission_type=strategy.commission.percent, commission_value=0.02, slippage=2, pyramiding=0)
+
+// ----------------------------- Inputs -----------------------------
+gPar       = "Parabolic / exhaustion filters"
+extLook    = input.int(10,    "Extension lookback (bars)",       minval=2, group=gPar)
+extMinPct  = input.float(50.0,"Min run % over lookback (large-cap ~50, small ~300)", group=gPar)
+stretchMin = input.float(30.0,"Min % above 10-EMA (stretched)",  group=gPar)
+upWin      = input.int(7,     "Up-streak window (bars)",         minval=2, group=gPar)
+minUpDays  = input.int(4,     "Min up days in window",           minval=1, group=gPar)
+adrLen     = input.int(20,    "ADR length",                      minval=2, group=gPar)
+adrMinPct  = input.float(8.0, "Min ADR %",                       group=gPar)
+
+gRisk      = "Risk & exits"
+riskPct    = input.float(0.4, "Risk per trade % (small!)",       minval=0.01, group=gRisk)
+adrStopMul = input.float(1.0, "Max stop = x ADR",                minval=0.1,  group=gRisk)
+coverLen   = input.int(10,    "Cover-target MA (10/20)",         minval=2, group=gRisk)
+coverType  = input.string("SMA","Cover MA type", options=["EMA","SMA"],      group=gRisk)
+partialPct = input.int(50,    "Cover % into the MA",             minval=1, maxval=99, group=gRisk)
+trailLook  = input.int(3,     "Trail stop = highest high of N",  minval=1, group=gRisk)
+
+// ----------------------------- Indicators -----------------------------
+adrPct   = (ta.sma(high / low, adrLen) - 1.0) * 100.0
+adrDollar= close * adrPct / 100.0
+ema10    = ta.ema(close, 10)
+runPct   = (close / close[extLook] - 1.0) * 100.0
+stretch  = (close - ema10) / ema10 * 100.0
+upCount  = math.sum(close > close[1] ? 1 : 0, upWin)
+coverMA  = coverType == "EMA" ? ta.ema(close, coverLen) : ta.sma(close, coverLen)
+
+// Extended/exhausted AND first crack (today breaks the prior day's low)
+extended = runPct >= extMinPct and stretch >= stretchMin and upCount >= minUpDays and adrPct >= adrMinPct
+firstCrack = close < low[1]
+
+entryPrice = close
+rawStop    = high                                  // high of day
+stopDist   = rawStop - entryPrice
+validStop  = stopDist > 0 and stopDist <= adrDollar * adrStopMul
+goShort    = extended and firstCrack and validStop and strategy.position_size == 0
+qty        = validStop ? math.floor((strategy.equity * riskPct / 100.0) / stopDist) : 0
+
+var float entryRef = na
+var float stopRef  = na
+var bool  partialed = false
+
+if goShort and qty > 0
+    strategy.entry("Short", strategy.short, qty=qty)
+    entryRef  := entryPrice
+    stopRef   := rawStop
+    partialed := false
+
+// ----------------------------- Management -----------------------------
+inShort = strategy.position_size < 0
+
+// Cover a partial into the MA (first bounce zone), then move stop to breakeven
+if inShort and not partialed and low <= coverMA
+    strategy.close("Short", qty_percent=partialPct, comment="cover into MA")
+    stopRef   := math.min(stopRef, entryRef)       // breakeven on remainder
+    partialed := true
+
+// After partial, ratchet the stop DOWN to the recent swing high (trail a falling stock)
+if inShort and partialed
+    stopRef := math.min(stopRef, ta.highest(high, trailLook))
+
+// Hard stop above (refreshed each bar)
+if inShort
+    strategy.exit("stop", "Short", stop=stopRef)
+
+// Give up the short if momentum resumes: close back above the cover MA
+if inShort and partialed and close > coverMA
+    strategy.close("Short", comment="trail/exit")
+
+// ----------------------------- Plots -----------------------------
+plot(ema10,   "10 EMA",  color=color.new(color.orange, 0))
+plot(coverMA, "Cover MA", color=color.new(color.blue, 0))
+plot(inShort ? stopRef : na, "Stop", color=color.red, style=plot.style_linebr, linewidth=2)
+bgcolor(extended ? color.new(color.red, 88) : na, title="Extended")
+plotshape(goShort and qty > 0, "Short", shape.triangledown, location.abovebar, color.new(color.red,0), size=size.small)

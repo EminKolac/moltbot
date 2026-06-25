@@ -251,6 +251,16 @@ def size(equity, risk_pct, entry, stop, adr_pct_val, max_pos_pct=0.25):
 
 *(Add relative-strength ranking, the regime gate, and the intraday ORH fill model to make it real.)*
 
+### 6.2 TradingView / Pine Script pack
+
+A runnable **Pine v6** implementation ships alongside this guide in `pine/` — backtestable
+`strategy()` scripts for the **breakout**, **episodic pivot**, and **parabolic short**, plus a
+**screener** indicator. It encodes the regime gate, the ADR-capped LOD/HOD stop, risk-based sizing,
+partial-into-strength, and the 10/20-MA trail. Honest limits carry over: a Pine *strategy* is
+single-symbol (no cross-sectional "top 1-2%" ranking), opening-range entries require an intraday
+chart, and the EP script approximates the catalyst by gap%+volume (no earnings-quality feed). See
+`pine/README.md`.
+
 ---
 
 ## 7. Expected bot-vs-human gap (set expectations)

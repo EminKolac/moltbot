@@ -1,0 +1,56 @@
+//@version=6
+// =====================================================================================
+// Qullamaggie — LEADER SCREENER (indicator for TradingView's Pine Screener)
+// Educational only. NOT financial advice.
+//
+// Add to a chart, then open the **Pine Screener** (screener.tradingview.com -> Pine),
+// pick this script, and filter/sort the plotted columns. This is the closest Pine gets to
+// his relative-strength funnel.
+//
+// HONEST LIMIT: even the Pine Screener filters/sorts a watchlist you choose; it does not
+// truly rank the WHOLE market to "top 1-2%". Build a broad watchlist, then sort by RS/ADR.
+// Use on the DAILY timeframe.
+// =====================================================================================
+indicator("Qulla Leader Screener", overlay=true)
+
+// ----------------------------- Inputs -----------------------------
+adrMin    = input.float(5.0,  "Min ADR %")
+dvMin     = input.float(50.0, "Min $ volume (millions)")
+rs1Min    = input.float(10.0, "Min 1-month RS %")
+rs3Min    = input.float(30.0, "Min 3-month RS %")
+rs6Min    = input.float(50.0, "Min 6-month RS %")
+nearHiMin = input.float(80.0, "Min % of 52-week high")
+
+// ----------------------------- Metrics -----------------------------
+rs1     = (close / close[21]  - 1.0) * 100.0       // ~1 month
+rs3     = (close / close[63]  - 1.0) * 100.0       // ~3 months
+rs6     = (close / close[126] - 1.0) * 100.0       // ~6 months
+adrPct  = (ta.sma(high / low, 20) - 1.0) * 100.0
+dvM     = close * volume / 1e6
+sma10   = ta.sma(close, 10)
+sma20   = ta.sma(close, 20)
+sma50   = ta.sma(close, 50)
+sma200  = ta.sma(close, 200)
+hi252   = ta.highest(high, 252)
+nearHi  = close / hi252 * 100.0
+dist10  = (close - sma10) / close * 100.0          // how close to the 10-MA it is surfing
+rsScore = rs1 + rs3 + rs6                           // simple composite to sort by
+
+// Leader pass: strong multi-timeframe RS, tradable range, liquid, in an uptrend, near highs
+isLeader = rs1 >= rs1Min and rs3 >= rs3Min and rs6 >= rs6Min and adrPct >= adrMin and dvM >= dvMin and close > sma50 and close > sma200 and nearHi >= nearHiMin
+
+// ----------------------------- Screener columns -----------------------------
+plot(rsScore, "RS score (sort)", display=display.data_window)
+plot(rs1,     "RS 1m %",         display=display.data_window)
+plot(rs3,     "RS 3m %",         display=display.data_window)
+plot(rs6,     "RS 6m %",         display=display.data_window)
+plot(adrPct,  "ADR %",           display=display.data_window)
+plot(dvM,     "$Vol (M)",        display=display.data_window)
+plot(nearHi,  "% of 52w high",   display=display.data_window)
+plot(dist10,  "Dist to 10MA %",  display=display.data_window)
+plot(isLeader ? 1 : 0, "Leader (1/0)", display=display.data_window)
+
+// On-chart cue
+plotshape(isLeader, "Leader", shape.diamond, location.top, color.new(color.green, 0), size=size.tiny)
+plot(sma10, "10 MA", color=color.new(color.orange, 40))
+plot(sma20, "20 MA", color=color.new(color.blue, 40))
