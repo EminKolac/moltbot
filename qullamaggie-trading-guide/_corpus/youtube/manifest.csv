@@ -1,0 +1,14 @@
+video_id,title,published_at,duration_min,view_count,transcript_status,mined
+JNVA5cd_m7M,Speculation money is back!,2023-12-15,27,69250,success,deep
+TZnX1qEiOkM,EP party!,2023-12-01,48,39316,success,deep
+VdQSDGZBLQE,Market mechanics setups and more,2023-06-09,97,53579,success,deep
+SLhbpNuHegw,EPs AI and quantum computing stocks,2023-06-08,78,17332,success,enumerated
+C7ZZhSxYYLk,Zzzlow,2023-06-05,30,9045,success,enumerated
+30ksgwzWboo,Lots of fades,2023-06-02,38,11473,captions_disabled,no
+1HFPeLD2zwc,AI and the shittier the stock the bigger the move,2023-06-01,63,10571,success,enumerated
+2UgJ5CvVVK4,EPs good follow through AI and Quantum names waking up,2023-05-23,40,12260,success,enumerated
+8Pa6cllRZNw,May 22 Stream,2023-05-22,25,7892,captions_disabled,no
+_y9Wo0eBP4A,Episodic Pivots Kenny boy and old times,2023-05-19,75,19428,success,enumerated
+# Coverage note: @Qullamaggie exposes ~10 recent videos (May-Dec 2023); older educational uploads were deleted by him.
+# Date-windowed query before 2023-05-18 returned 0; archive channel @tradingarchive2702 did not resolve. Free-tier cap = 10 videos/call.
+# 8 of 10 transcribable (2 have captions disabled). 3 deep-mined into extracted-quotes.md.
