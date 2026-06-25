@@ -105,7 +105,14 @@ async function runWithToken(
     if (!sRes.ok) throw new ApifyError(`poll ${run.id} -> ${sRes.status}`, sRes.status);
     status = ((await sRes.json()) as { data: ApifyRun }).data.status;
   }
-  if (status !== "SUCCEEDED") throw new ApifyError(`run ${run.id} finished as ${status}`);
+  if (status !== "SUCCEEDED") {
+    // Some actors (e.g. the Shopify analyzer) exit non-zero yet still write a full
+    // dataset. Salvage the items when present; only fail hard when there are none.
+    const salvaged = await fetchAllItems(run.defaultDatasetId, token);
+    if (!salvaged.length) throw new ApifyError(`run ${run.id} finished as ${status}`);
+    log(`${label} run ${run.id} finished as ${status}; salvaged ${salvaged.length} items`);
+    return salvaged;
+  }
   log(`${label} run ${run.id} succeeded`);
 
   return fetchAllItems(run.defaultDatasetId, token);
