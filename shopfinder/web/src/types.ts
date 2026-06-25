@@ -81,4 +81,6 @@ export interface Facets {
 export interface Stats {
   total: number;
   lastIngestedAt: number | null;
+  hasVisits: boolean;
+  hasRevenue: boolean;
 }

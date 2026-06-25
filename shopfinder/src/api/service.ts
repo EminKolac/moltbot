@@ -66,6 +66,24 @@ export function getFacets(db: DB): Facets {
   };
 }
 
-export function getStats(db: DB): { total: number; lastIngestedAt: number | null } {
-  return { total: countStores(db), lastIngestedAt: lastIngestedAt(db) };
+export function getStats(db: DB): {
+  total: number;
+  lastIngestedAt: number | null;
+  hasVisits: boolean;
+  hasRevenue: boolean;
+} {
+  // Surface whether any store actually has traffic-derived data, so the UI can
+  // hide sorts (visits/revenue) that would otherwise be empty for this source.
+  const f = db
+    .prepare(
+      `SELECT EXISTS(SELECT 1 FROM stores WHERE monthly_visits IS NOT NULL) AS v,
+              EXISTS(SELECT 1 FROM stores WHERE monthly_revenue_usd IS NOT NULL) AS r`
+    )
+    .get() as { v: number; r: number };
+  return {
+    total: countStores(db),
+    lastIngestedAt: lastIngestedAt(db),
+    hasVisits: !!f.v,
+    hasRevenue: !!f.r,
+  };
 }

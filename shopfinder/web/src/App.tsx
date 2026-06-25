@@ -90,6 +90,17 @@ export function App() {
   const total = data?.total ?? 0;
   const page = data?.page ?? 1;
 
+  // Hide the visits/revenue sorts when no store has that data (this data source
+  // doesn't provide traffic). Show them until stats load, then refine.
+  const availableSorts = SORTS.filter(
+    (s) =>
+      (s.value !== "visits" || stats?.hasVisits !== false) &&
+      (s.value !== "revenue" || stats?.hasRevenue !== false)
+  );
+  const sortValue = availableSorts.some((s) => s.value === (filters.sort ?? "newest"))
+    ? filters.sort ?? "newest"
+    : "newest";
+
   return (
     <div className="app">
       <header className="topbar">
@@ -127,10 +138,10 @@ export function App() {
             <label className="sort">
               Sort
               <select
-                value={filters.sort ?? "newest"}
+                value={sortValue}
                 onChange={(e) => update({ sort: e.target.value as SortKey })}
               >
-                {SORTS.map((s) => (
+                {availableSorts.map((s) => (
                   <option key={s.value} value={s.value}>
                     {s.label}
                   </option>

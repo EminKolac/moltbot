@@ -1,7 +1,7 @@
 import { beforeAll, describe, expect, it } from "vitest";
 import { openDb, type DB } from "../src/db/client";
 import { upsertStores } from "../src/db/repo";
-import { getFacets, queryStores } from "../src/api/service";
+import { getFacets, getStats, queryStores } from "../src/api/service";
 import type { Store } from "../src/types";
 
 function store(p: Partial<Store> & { domain: string }): Store {
@@ -26,8 +26,8 @@ function store(p: Partial<Store> & { domain: string }): Store {
     product_types: [],
     installed_apps: [],
     product_count: p.product_count ?? null,
-    monthly_visits: null,
-    monthly_revenue_usd: null,
+    monthly_visits: p.monthly_visits ?? null,
+    monthly_revenue_usd: p.monthly_revenue_usd ?? null,
     sample_products: [],
     source_actor: null,
     raw: null,
@@ -111,5 +111,19 @@ describe("niche matching is case-insensitive", () => {
     const fb = getFacets(ndb).niches.filter((v) => v.value.toLowerCase() === "food & beverage");
     expect(fb).toHaveLength(1);
     expect(fb[0].count).toBe(2);
+  });
+});
+
+describe("getStats", () => {
+  it("reports whether traffic-derived data is present", () => {
+    const sdb = openDb(":memory:");
+    upsertStores(sdb, [
+      store({ domain: "a.com" }),
+      store({ domain: "b.com", monthly_visits: 1000 }),
+    ]);
+    const st = getStats(sdb);
+    expect(st.total).toBe(2);
+    expect(st.hasVisits).toBe(true); // b.com has visits
+    expect(st.hasRevenue).toBe(false); // none have revenue
   });
 });
