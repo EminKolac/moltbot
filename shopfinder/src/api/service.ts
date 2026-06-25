@@ -30,13 +30,14 @@ function mapFacetRows(rows: unknown[]): FacetValue[] {
   }));
 }
 
-function scalarFacet(db: DB, column: string): FacetValue[] {
+function scalarFacet(db: DB, column: string, collate?: string): FacetValue[] {
+  const grouped = collate ? `${column} COLLATE ${collate}` : column;
   return mapFacetRows(
     db
       .prepare(
         `SELECT ${column} AS value, COUNT(*) AS count FROM stores
          WHERE ${column} IS NOT NULL AND ${column} != ''
-         GROUP BY ${column} ORDER BY count DESC, value ASC`
+         GROUP BY ${grouped} ORDER BY count DESC, value ASC`
       )
       .all()
   );
@@ -60,7 +61,7 @@ export function getFacets(db: DB): Facets {
     languages: scalarFacet(db, "language"),
     countries: scalarFacet(db, "country"),
     ships_to: jsonFacet(db, "ships_to_countries"),
-    niches: scalarFacet(db, "niche"),
+    niches: scalarFacet(db, "niche", "NOCASE"),
     currencies: scalarFacet(db, "currency"),
   };
 }

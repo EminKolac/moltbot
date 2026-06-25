@@ -95,3 +95,21 @@ describe("getFacets", () => {
     expect(f.currencies.find((v) => v.value === "EUR")?.count).toBe(1);
   });
 });
+
+describe("niche matching is case-insensitive", () => {
+  it("filters and facets niche regardless of casing", () => {
+    const ndb = openDb(":memory:");
+    upsertStores(ndb, [
+      store({ domain: "x.com", niche: "Food & Beverage" }),
+      store({ domain: "y.com", niche: "food & beverage" }),
+      store({ domain: "z.com", niche: "Beauty" }),
+    ]);
+    // A single casing in the filter matches every stored casing.
+    expect(queryStores(ndb, { niche: ["food & beverage"] }).total).toBe(2);
+    expect(queryStores(ndb, { niche: ["FOOD & BEVERAGE"] }).total).toBe(2);
+    // The two casings collapse into one facet entry with the summed count.
+    const fb = getFacets(ndb).niches.filter((v) => v.value.toLowerCase() === "food & beverage");
+    expect(fb).toHaveLength(1);
+    expect(fb[0].count).toBe(2);
+  });
+});

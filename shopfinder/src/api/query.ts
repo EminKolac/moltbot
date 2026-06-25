@@ -73,7 +73,7 @@ export function buildStoresQuery(f: StoreFilters): BuiltQuery {
 
   pushIn(where, params, "country", norm(f.country, (s) => s.toUpperCase()));
   pushIn(where, params, "currency", norm(f.currency, (s) => s.toUpperCase()));
-  pushIn(where, params, "niche", norm(f.niche, (s) => s));
+  pushIn(where, params, "niche", norm(f.niche, (s) => s), "NOCASE");
 
   if (f.product_count_min != null) {
     where.push("product_count >= ?");
@@ -101,8 +101,15 @@ function norm(values: string[] | undefined, fn: (s: string) => string): string[]
   return [...new Set(values.map((v) => fn(String(v).trim())).filter(Boolean))];
 }
 
-function pushIn(where: string[], params: unknown[], column: string, values: string[]): void {
+function pushIn(
+  where: string[],
+  params: unknown[],
+  column: string,
+  values: string[],
+  collate?: string
+): void {
   if (!values.length) return;
-  where.push(`${column} IN (${placeholders(values.length)})`);
+  const col = collate ? `${column} COLLATE ${collate}` : column;
+  where.push(`${col} IN (${placeholders(values.length)})`);
   params.push(...values);
 }
